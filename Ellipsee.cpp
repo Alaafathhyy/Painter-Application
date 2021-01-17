@@ -10,29 +10,22 @@ void Ellipsee::Draw() {
     else this->Direct();
 
 }
-
 void Ellipsee::Direct() {
 
-    double AA, BB, x, y;
-    x = 0;
-    y = B;
-    AA = A * A;
-    BB = B * B;
-    while (x <= A ) {
-        SETPIXEL(cx + round(x), cy + round(y));
-        SETPIXEL(cx + round(x), cy - round(y));
-        SETPIXEL(cx - round(x), cy + round(y));
-        SETPIXEL(cx - round(x), cy - round(y));
-        x += 0.01;
-        y = sqrt((AA * BB - BB * (x * x)) / AA);
+     for(double x=A;x >= 0;x-=0.02) {
+         double y  = abs(B * sqrt(1 - ((x * x) / (A * A))));
+        SETPIXEL(xc + round(x), yc + round(y));
+        SETPIXEL(xc + round(x), yc - round(y));
+        SETPIXEL(xc - round(x), yc + round(y));
+        SETPIXEL(xc - round(x), yc - round(y));
     }
-
 
 }
 
-Ellipsee::Ellipsee(int cx, int cy, int A, int B, HDC hdc, COLORREF Color, int Type) {
-    this->cx = cx;
-    this->cy = cy;
+
+Ellipsee::Ellipsee(int xc, int yc, int A, int B, HDC hdc, COLORREF Color, int Type) {
+    this->xc = xc;
+    this->yc = yc;
     this->A = A;
     this->B = B;
     this->hdc = hdc;
@@ -46,16 +39,13 @@ void Ellipsee::polar() {
 
     double x = 0;
     double y = B;
-    double angle = 0;
     double range = A;
 
-    while (angle <= range) {
-        SETPIXEL((int) (cx + x + 0.5), (int) (cy + y + 0.5));
-        SETPIXEL((int) (cx + x + 0.5), (int) (cy - y + 0.5));
-        SETPIXEL((int) (cx - x + 0.5), (int) (cy - y + 0.5));
-        SETPIXEL((int) (cx - x + 0.5), (int) (cy + y + 0.5));
-
-        angle += 0.05;
+    for (double angle = 0; angle <= range; angle += 0.05) {
+        SETPIXEL((int) (xc + x), (int) (yc + y));
+        SETPIXEL((int) (xc + x), (int) (yc - y));
+        SETPIXEL((int) (xc - x), (int) (yc - y));
+        SETPIXEL((int) (xc - x), (int) (yc + y));
         x = (A * cos(angle));
         y = (B * sin(angle));
     }
